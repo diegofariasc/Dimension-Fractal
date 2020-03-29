@@ -1,5 +1,5 @@
 from numpy import zeros, arange, fix, polyfit
-from math  import log
+from math  import log, sqrt
 
 """
 Algoritmo de Higuchi
@@ -31,4 +31,20 @@ def hfd(x,kmax=5):
     return polyfit(Lnk,Lk,1)[0]
 
 
+"""
+Algoritmo de Katz (KFD)
+Basado en la implementacion de Jess Monge lvarez
 
+Input:  serie   Una lista de valores
+Output:         Dimension fractal que describe la lista x
+"""
+def katz(serie):
+
+    N = len(serie)
+    L = sum([sqrt(1 + ((serie[i-1] - serie[i])**2)) for i in range(1,N)])
+
+    d=max([sqrt(((0-i)**2) + ((serie[0] - serie[i])**2)) for i in range(1,N)])
+
+    return log(N-1) / (log (N-1) + log(d/L))
+
+print(katz([20,50,30,10,80,5,6,4,1,4]))
